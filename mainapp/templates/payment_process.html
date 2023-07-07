@@ -1,0 +1,25 @@
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    setTimeout(function() {
+     window.location.href = "{% url 'my_bookings'  %}"; // Do something after 5 seconds
+}, 3000);
+
+</script>
+{% block content %}
+<section class="section section1">
+    <div class="center-text">
+        <div class="gif-div">
+            {% if flight.seats_count > 0 %}
+            <p style="text-align:center;"><img src="{% static 'img/payment-confirmation.gif' %}" alt="processing"></p>
+            {% else %}
+            <p style="text-align:center;"><img src="{% static 'img/payment-failed.gif' %}" alt="processing"></p>
+            {% endif %}
+        </div>
+        <div class="header-before">
+            <p style="text-align:center;">Processing Payment...</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

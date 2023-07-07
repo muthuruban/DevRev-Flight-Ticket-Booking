@@ -1,0 +1,71 @@
+{% extends 'base_3.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Admin Dashboard</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Flights</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Flight Number</th>
+                    <th>Departure City</th>
+                    <th>Arrival City</th>
+                    <th>Departure Date</th>
+                    <th>Departure Time</th>
+                    <th>Seats Available</th>
+                    <th>Fare</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for flight in flights %}
+                <tr>
+                    <td>{{ flight.flight_number }}</td>
+                    <td>{{ flight.departure_city }}</td>
+                    <td>{{ flight.arrival_city }}</td>
+                    <td>{{ flight.departure_date }}</td>
+                    <td>{{ flight.departure_time }}</td>
+                    <td>{{ flight.seats_count }}</td>
+                    <td>{{ flight.fare }}</td>
+                    <td><a href="{% url 'remove_flight' flight.id %}" class="btn btn-danger btn-sm">Delete</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <br><br><br><br>
+    <div>
+        <div class="col-md-6">
+            <h2>Bookings</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Flight</th>
+                    <th>Seat Number</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.user }}</td>
+                    <td>{{ booking.flight.flight_number }}</td>
+                    <td>{{ booking.seat_number }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br><br>
+    <div >
+        <a href="{% url 'add_flight' %}" class="btn btn-primary btn-lg mr-3">Add Flights</a>
+    </div>
+</div>
+<br><br>
+{% endblock %}

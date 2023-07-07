@@ -1,0 +1,53 @@
+{% extends 'base_2.html' %}
+
+{% block content %}
+
+<div class="container" xmlns="http://www.w3.org/1999/html">
+    <h1 class="mb-4">My Bookings</h1>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            {% if bookings %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Flight Number</th>
+                    <th scope="col">Departure City</th>
+                    <th scope="col">Arrival City</th>
+                    <th scope="col">Departure Date</th>
+                    <th scope="col">Passenger Name</th>
+                    <th scope="col">Fare</th>
+                    <th scope="col">Seat Number</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.flight.flight_number }}</td>
+                    <td>{{ booking.flight.departure_city }}</td>
+                    <td>{{ booking.flight.arrival_city }}</td>
+                    <td>{{ booking.flight.departure_date }}</td>
+                    <td>{{ booking.user.name }}</td>
+                    <td>{{ booking.flight.fare }}</td>
+                    <td>{{ booking.seat_number }}</td>
+                    <td>
+                    </td>
+                </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8">No bookings found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No bookings found.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        <a href="{% url 'flight_search' %}" class="btn btn-primary btn mr-2">Book Ticket</a>
+    </div>
+</div>
+
+{% endblock %}

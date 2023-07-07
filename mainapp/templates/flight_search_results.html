@@ -1,0 +1,41 @@
+{% extends 'base_2.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Flight Search Results</h1>
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Flight Number</th>
+          <th>Departure City</th>
+          <th>Arrival City</th>
+          <th>Departure Date</th>
+          <th>Departure Time</th>
+          <th>Seats Available</th>
+          <th>Fare</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for flight in flights %}
+          <tr>
+            <td>{{ flight.flight_number }}</td>
+            <td>{{ flight.departure_city }}</td>
+            <td>{{ flight.arrival_city }}</td>
+            <td>{{ flight.departure_date }}</td>
+            <td>{{ flight.departure_time }}</td>
+            <td>{{ flight.seats_count }}</td>
+            <td>{{ flight.fare }}</td>
+            <td>
+              <a href="{% url 'flight_booking' flight.id %}" class="btn btn-primary">Book</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3">No flights found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
