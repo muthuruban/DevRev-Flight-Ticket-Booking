@@ -1,0 +1,40 @@
+{% extends 'base_2.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Ticket Details</h5>
+        <hr>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Flight:</strong> </p>
+            <p><strong>Passenger Name:</strong> </p>
+            <p><strong>Departure Date:</strong></p>
+            <p><strong>Departure Time:</strong></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Booking Date:</strong> </p>
+            <p><strong>Booking Time:</strong> </p>
+            <p><strong>Status:</strong></p>
+            <p><strong>Seat Number:</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4">
+      <a href="{% url 'my_bookings' %}" class="btn btn-primary" id="back_btn">Back to My Bookings</a>
+      <button class="btn btn-secondary" onclick="printTicket()" id="print_btn">Print Ticket</button>
+    </div>
+  </div>
+
+<script>
+    function printTicket() {
+    $('#back_btn').hide();
+    $('#print_btn').hide();
+      window.print();
+    $('#back_btn').show();
+    $('#print_btn').show();
+    }
+  </script>
+{% endblock %}

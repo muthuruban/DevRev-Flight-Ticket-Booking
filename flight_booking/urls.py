@@ -28,5 +28,6 @@ urlpatterns = [
     # Bookings
     path('flight/<int:flight_id>/booking/make_payment/', views.make_payment, name='make_payment'),
     path('flight/<int:flight_id>/booking/payment_status/', views.payment_status, name='payment_status'),
-    # path('booking/cancel_ticket/<int:booking_id>/', views.cancel_ticket, name='cancel_ticket'),
+    path('booking/cancel_ticket/<int:booking_id>/', views.cancel_ticket, name='cancel_ticket'),
+    path('booking/<int:booking_id>/view_ticket/',views.view_ticket, name='view_ticket'),
 ]

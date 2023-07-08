@@ -79,7 +79,7 @@ def flight_booking(request, flight_id):
         flight.seats_count = seats_available - 1
         flight.save()
         booking = Tickets.objects.filter(user=request.user)
-        return redirect('my_bookings')
+        return redirect('make_payment', flight_id=flight.id)
     return render(request, 'flight_booking.html', {'flight': flight})
 
 
@@ -87,7 +87,7 @@ def flight_booking(request, flight_id):
 def make_payment(request, flight_id):
     flight = Flight.objects.get(id=flight_id)
     if request.method == 'POST':
-        return render(request, 'payment_process.html', {'flight': flight})
+        return redirect('payment_status', flight_id=flight.id)
     return render(request, 'payment.html', {'flight': flight})
 
 
@@ -102,6 +102,22 @@ def payment_status(request, flight_id):
 def my_bookings(request):
     bookings = Tickets.objects.filter(user=request.user)
     return render(request, 'my_bookings.html', {'bookings': bookings})
+
+
+def cancel_ticket(request, booking_id):
+    booking = Tickets.objects.filter(id=booking_id)
+    flight = Flight.objects.get(id=Tickets.objects.get(id=booking_id).flight.id)
+    seats_available = flight.seats_count
+    flight.seats_count = seats_available+1
+    flight.save()
+    booking.delete()
+    # booking.save()
+    return redirect('my_bookings')
+
+
+def view_ticket(request, booking_id):
+    booking = Tickets.objects.filter(id=booking_id)
+    return render(request, 'view_ticket.html', {'booking': booking})
 
 
 # Admin Use Cases

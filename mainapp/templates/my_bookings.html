@@ -17,7 +17,8 @@
                     <th scope="col">Passenger Name</th>
                     <th scope="col">Fare</th>
                     <th scope="col">Seat Number</th>
-                    <th scope="col">Action</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,13 @@
                     <td>{{ booking.flight.fare }}</td>
                     <td>{{ booking.seat_number }}</td>
                     <td>
+                        <a  href="{% url 'view_ticket' booking.id %}" target="_blank" class="btn btn-primary">View</a>
+                    </td>
+                    <td>
+                        <form action="{% url 'cancel_ticket' booking.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Cancel</button>
+                        </form>
                     </td>
                 </tr>
                 {% empty %}
