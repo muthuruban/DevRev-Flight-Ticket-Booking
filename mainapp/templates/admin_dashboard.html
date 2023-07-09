@@ -1,20 +1,43 @@
 {% extends 'base_3.html' %}
 
 {% block content %}
+<style>
+    table {
+        border-spacing: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+      }
+.col-25 {
+  -ms-flex: 25%; /* IE10 */
+  flex: 25%;
+}
+  .row {
+    flex-direction: column-reverse;
+  }
+  .col-25 {
+    margin-bottom: 20px;
+  }
+
+</style>
+<div class="row">
 <div class="container">
     <h1>Admin Dashboard</h1>
     <hr>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-50">
             <h2>Flights</h2>
             <table class="table">
                 <thead>
                 <tr>
                     <th>Flight Number</th>
+                    <th>Airline</th>
                     <th>Departure City</th>
-                    <th>Arrival City</th>
                     <th>Departure Date</th>
                     <th>Departure Time</th>
+                    <th>Arrival City</th>
+                    <th>Arrival Date</th>
+                    <th>Arrival Time</th>
                     <th>Seats Available</th>
                     <th>Fare</th>
                     <th></th>
@@ -24,10 +47,13 @@
                 {% for flight in flights %}
                 <tr>
                     <td>{{ flight.flight_number }}</td>
+                    <td>{{ flight.airline }}</td>
                     <td>{{ flight.departure_city }}</td>
-                    <td>{{ flight.arrival_city }}</td>
                     <td>{{ flight.departure_date }}</td>
                     <td>{{ flight.departure_time }}</td>
+                    <td>{{ flight.arrival_city }}</td>
+                    <td>{{ flight.arrival_date }}</td>
+                    <td>{{ flight.arrival_time }}</td>
                     <td>{{ flight.seats_count }}</td>
                     <td>{{ flight.fare }}</td>
                     <td><a href="{% url 'remove_flight' flight.id %}" class="btn btn-danger btn-sm">Delete</a></td>
@@ -36,26 +62,36 @@
                 </tbody>
             </table>
         </div>
-
     </div>
-    <br><br><br><br>
-    <div>
-        <div class="col-md-6">
+    <br>
+    <div class="col-25">
+        <a href="{% url 'add_flight' %}" class="btn btn-primary mr-3">Add Flights</a>
+    </div>
+    <br><br>
+
+    <div class="row">
+        <div class="col-50">
             <h2>Bookings</h2>
             <table class="table">
                 <thead>
                 <tr>
-                    <th>User</th>
+                    <th>Ref No</th>
                     <th>Flight</th>
+                    <th>Passenger</th>
                     <th>Seat Number</th>
+                    <th>Booked Date & Time</th>
+                    <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for booking in bookings %}
                 <tr>
-                    <td>{{ booking.user }}</td>
+                    <td>{{ booking.ref_no}}</td>
                     <td>{{ booking.flight.flight_number }}</td>
+                    <td>{{ booking.passenger }}</td>
                     <td>{{ booking.seat_number }}</td>
+                    <td>{{ booking.booking_date_time}}</td>
+                    <td>{{ booking.status }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -63,9 +99,36 @@
         </div>
     </div>
     <br><br>
-    <div >
-        <a href="{% url 'add_flight' %}" class="btn btn-primary btn-lg mr-3">Add Flights</a>
+    <div class="row">
+        <div class="col-50">
+            <h2>Canceled</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Ref No</th>
+                    <th>Flight</th>
+                    <th>Passenger</th>
+                    <th>Seat Number</th>
+                    <th>Booked Date & Time</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cancels in cancelled %}
+                <tr>
+                    <td>{{ cancels.ref_no}}</td>
+                    <td>{{ cancels.flight.flight_number }}</td>
+                    <td>{{ cancels.passenger }}</td>
+                    <td>{{ cancels.seat_number }}</td>
+                    <td>{{ cancels.cancelled_date_time}}</td>
+                    <td>{{ cancels.status }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+</div>
 </div>
 <br><br>
 {% endblock %}

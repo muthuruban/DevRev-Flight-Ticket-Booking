@@ -10,6 +10,10 @@
             <input type="text" class="form-control" id="flight_number" name="flight_number" required>
         </div>
         <div class="form-group">
+            <label for="air_line">Airline:</label>
+            <input type="text" class="form-control" id="air_line" name="air_line" required>
+        </div>
+        <div class="form-group">
             <label for="departure_city">Departure City:</label>
             <input type="text" class="form-control" id="departure_city" name="departure_city" required>
         </div>
@@ -26,6 +30,14 @@
             <input type="time" class="form-control" id="departure_time" name="departure_time" required>
         </div>
         <div class="form-group">
+            <label for="arrival_date">Arrival Date:</label>
+            <input type="date" class="form-control" id="arrival_date" name="arrival_date" required>
+        </div>
+        <div class="form-group">
+            <label for="arrival_time">Arrival Time:</label>
+            <input type="time" class="form-control" id="arrival_time" name="arrival_time" required>
+        </div>
+        <div class="form-group">
             <label for="seats_available">Seats Available:</label>
             <input type="number" class="form-control" id="seats_available" name="seats_available" required>
         </div>
@@ -36,4 +48,5 @@
         <button type="submit" class="btn btn-primary">Add Flight</button>
     </form>
 </div>
+<br><br>
 {% endblock %}

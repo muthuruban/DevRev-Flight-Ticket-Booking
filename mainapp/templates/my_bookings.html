@@ -5,7 +5,7 @@
 <div class="container" xmlns="http://www.w3.org/1999/html">
     <h1 class="mb-4">My Bookings</h1>
     <div class="row">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-50 ">
             {% if bookings %}
             <table class="table table-striped">
                 <thead>
@@ -28,7 +28,7 @@
                     <td>{{ booking.flight.departure_city }}</td>
                     <td>{{ booking.flight.arrival_city }}</td>
                     <td>{{ booking.flight.departure_date }}</td>
-                    <td>{{ booking.user.name }}</td>
+                    <td>{{ booking.passenger }}</td>
                     <td>{{ booking.flight.fare }}</td>
                     <td>{{ booking.seat_number }}</td>
                     <td>
@@ -53,9 +53,10 @@
             {% endif %}
         </div>
     </div>
-    <div class="container">
+    <br>
+    <div class="col-50">
         <a href="{% url 'flight_search' %}" class="btn btn-primary btn mr-2">Book Ticket</a>
     </div>
 </div>
-
+<br><br>
 {% endblock %}

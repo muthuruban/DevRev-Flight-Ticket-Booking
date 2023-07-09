@@ -1,9 +1,10 @@
+import secrets
 import time
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import User, Flight, Tickets, Airports, Passenger
+from .models import User, Flight, Tickets, Airports, Passenger, CancelledTickets
 from .forms import UserSignupForm, UserLoginForm, AdminLoginForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -70,11 +71,19 @@ def flight_booking(request, flight_id):
         seats_available = flight.seats_count
         seat_number = seats_available
         name = request.POST.get('name')
-        email = request.POST.get('mail')
+        email = request.POST.get('email')
         phone = request.POST.get('phone')
         age = request.POST.get('age')
-        booking = Tickets.objects.create(user=request.user, flight=flight,
+        gender = request.POST.get('gender')
+        ticket_fare = flight.fare + 80
+        booking = Tickets.objects.create(user=request.user, flight=flight, passenger=name, p_mail=email, p_phone=phone,
+                                         age=age, sex=gender, fare_charges=ticket_fare,
                                          seat_number=seat_number)
+        booking.ref_no = secrets.token_hex(3).upper()
+        if seats_available > 0:
+            booking.status = 'CONFIRMED'
+        else:
+            booking.status = 'CANCELED'
         booking.save()
         flight.seats_count = seats_available - 1
         flight.save()
@@ -105,18 +114,21 @@ def my_bookings(request):
 
 
 def cancel_ticket(request, booking_id):
-    booking = Tickets.objects.filter(id=booking_id)
+    booking = Tickets.objects.get(id=booking_id)
     flight = Flight.objects.get(id=Tickets.objects.get(id=booking_id).flight.id)
     seats_available = flight.seats_count
-    flight.seats_count = seats_available+1
+    flight.seats_count = seats_available + 1
     flight.save()
+    booking.status = 'CANCELLED'
+    CancelledTickets.objects.create(user=booking.user,ref_no=booking.ref_no,flight=booking.flight,passenger=booking.passenger,seat_number=booking.seat_number)
+
     booking.delete()
     # booking.save()
     return redirect('my_bookings')
 
 
 def view_ticket(request, booking_id):
-    booking = Tickets.objects.filter(id=booking_id)
+    booking = Tickets.objects.get(id=booking_id)
     return render(request, 'view_ticket.html', {'booking': booking})
 
 
@@ -142,17 +154,21 @@ def admin_login(request):
 def admin_dashboard(request):
     flights = Flight.objects.all()
     bookings = Tickets.objects.all()
-    return render(request, 'admin_dashboard.html', {'flights': flights, 'bookings': bookings})
+    cancelled = CancelledTickets.objects.all()
+    return render(request, 'admin_dashboard.html', {'flights': flights, 'bookings': bookings, 'cancelled': cancelled})
 
 
 @login_required(login_url='admin_login')
 def add_flight(request):
     if request.method == 'POST':
         flight_number = request.POST.get('flight_number')
+        airline = request.POST.get('air_line')
         departure_city = request.POST.get('departure_city')
         arrival_city = request.POST.get('arrival_city')
         departure_date = request.POST.get('departure_date')
         departure_time = request.POST.get('departure_time')
+        arrival_date = request.POST.get('arrival_date')
+        arrival_time = request.POST.get('arrival_time')
         seats_count = request.POST.get('seats_available')
         fare = request.POST.get('fare')
         cities = []
@@ -164,9 +180,12 @@ def add_flight(request):
         for i in cities:
             if not Airports.objects.filter(airport_name=i).exists():
                 airports = Airports.objects.create(airport_name=i)
-        flight = Flight(flight_number=flight_number, departure_city=Airports.objects.get(airport_name=cities[0]),
+                airports.save()
+        flight = Flight(flight_number=flight_number, airline=airline,
+                        departure_city=Airports.objects.get(airport_name=cities[0]),
                         arrival_city=Airports.objects.get(airport_name=cities[1]),
-                        departure_date=departure_date, departure_time=departure_time, seats_count=seats_count,
+                        departure_date=departure_date, departure_time=departure_time, arrival_date=arrival_date,
+                        arrival_time=arrival_time, seats_count=seats_count,
                         fare=fare)
         flight.save()
         return redirect('admin_dashboard')
