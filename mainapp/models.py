@@ -32,7 +32,7 @@ class Flight(models.Model):
     departure_time = models.TimeField()
     arrival_date = models.DateField()
     arrival_time = models.TimeField()
-    seats_count = models.IntegerField(default=100)
+    seats_count = models.IntegerField(default=60)
     fare = models.PositiveIntegerField()
 
 
