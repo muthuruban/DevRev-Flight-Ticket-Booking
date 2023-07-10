@@ -66,6 +66,13 @@ manage flights.
   username: sampleuser
   password: user@123
 ```
+9. Available Flight Lists:
+
+- Flight Number: DLE44567 Airline: Air India From: Delhi To: Mumbai Departure Date & Time: July 13, 2023  14:45:00
+- Flight Number: 3458398 Airline: Jet Airways From: Madurai To: Chennai Departure Date & Time: July 14, 2023  12:45:00	
+- Flight Number: 3458398 Airline: IndiGo From: Delhi To: London Departure Date & Time: July 15, 2023  18:50:00
+- Flight Number: EF890651 Airline: British Airways From: Delhi To: Sandtoft Departure Date & Time: July 18, 2023  03:00:00
+- Flight Number: LB593089E Airline: American Airlines From: Denver To: Mumbai Departure Date & Time: July 20, 2023  23:00:00
 
 ## Project Structure
 
