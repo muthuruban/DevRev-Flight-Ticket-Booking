@@ -9,6 +9,17 @@
                     <h3 class="card-title text-center">User Login</h3>
                     <form method="post">
                         {% csrf_token %}
+                        {% if form.errors %}
+                            <div class="col-12 register-field">
+                                <div class="alert alert-block alert-danger">
+                                    <ul>
+                                         <li>
+                                             Please enter a correct username and password.Note that both fields may be case-sensitive.
+                                         </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="form-group">
                             <label for="id_username">Username</label>
                             <input type="text" class="form-control" id="id_username" name="username"
