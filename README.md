@@ -94,10 +94,6 @@ The project follows the following structure:
 
 ![alt text](https://github.com/muthuruban/DevRev-Flight-Ticket-Booking/blob/main/dbimg.png?raw=true)
 
-## Contributing
-
-Contributions to this project are welcome. If you encounter any issues or have suggestions for improvements, please feel
-free to submit a pull request or create an issue.
 
 ## Link
 
