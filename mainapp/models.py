@@ -42,14 +42,6 @@ GENDER = (
 )
 
 
-class Passenger(models.Model):
-    flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    age = models.IntegerField(default=20)
-
-
 class Tickets(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ref_no = models.CharField(unique=True, max_length=8)

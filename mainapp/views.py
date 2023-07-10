@@ -4,12 +4,13 @@ import time
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .models import User, Flight, Tickets, Airports, Passenger, CancelledTickets
+from .models import User, Flight, Tickets, Airports, CancelledTickets
 from .forms import UserSignupForm, UserLoginForm, AdminLoginForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-import time,datetime
+import time, datetime
 from django.contrib import messages
+
 
 # User Use Cases
 def index(request):
@@ -21,7 +22,7 @@ def user_signup(request):
         form = UserSignupForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request,'Account has been successfully created!')
+            messages.success(request, 'Account has been successfully created!')
             return redirect('user_login')
     else:
         form = UserSignupForm()
@@ -37,7 +38,7 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request,'Login Successful')
+                messages.success(request, 'Login Successful')
                 return redirect('flight_search')
             else:
                 messages.error(request, 'Invalid username or password')
@@ -58,14 +59,15 @@ def flight_search(request):
     bookings = Tickets.objects.filter(user=request.user)
     if request.method == 'POST':
         origin = request.POST['origin']
+        destination = request.POST['destination']
         departure_date = request.POST['departure_date']
         print(f"#DATE {departure_date}#")
-        year,month,date=map(int,departure_date.split('-'))
-        weekday=datetime.date(year,month,date).weekday()
+        year, month, date = map(int, departure_date.split('-'))
+        weekday = datetime.date(year, month, date).weekday()
         departure_time = request.POST['departure_time']
-        flights = Flight.objects.filter(departure_date=departure_date,departure_time=departure_time)
+        flights = Flight.objects.filter(departure_date=departure_date)
         return render(request, 'flight_search_results.html', {'flights': flights})
-    return render(request, 'flight_search.html', {'airports': airports,'bookings': bookings})
+    return render(request, 'flight_search.html', {'airports': airports, 'bookings': bookings})
 
 
 @login_required(login_url='user_login')
@@ -104,10 +106,10 @@ def flight_booking(request, flight_id):
 @login_required(login_url='user_login')
 def make_payment(request, flight_id):
     flight = Flight.objects.get(id=flight_id)
-    fare_charges = flight.fare+80
+    fare_charges = flight.fare + 80
     if request.method == 'POST':
         return redirect('payment_status', flight_id=flight.id)
-    return render(request, 'payment.html', {'flight': flight,'fare':fare_charges})
+    return render(request, 'payment.html', {'flight': flight, 'fare': fare_charges})
 
 
 @login_required(login_url='user_login')
@@ -130,7 +132,8 @@ def cancel_ticket(request, booking_id):
     flight.seats_count = seats_available + 1
     flight.save()
     booking.status = 'CANCELLED'
-    CancelledTickets.objects.create(user=booking.user,ref_no=booking.ref_no,flight=booking.flight,passenger=booking.passenger,seat_number=booking.seat_number)
+    CancelledTickets.objects.create(user=booking.user, ref_no=booking.ref_no, flight=booking.flight,
+                                    passenger=booking.passenger, seat_number=booking.seat_number)
 
     booking.delete()
     # booking.save()
